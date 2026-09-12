@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Ice Balance — Arctic Food Web Playground</title>
+<title>The Ice Balance — arctic food web simulation</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -45,7 +45,7 @@
     line-height:1.5;
   }
 
-  /* ---- SCENE ---- */
+
   .scene{
     position:relative;
     border-radius:28px;
@@ -108,7 +108,7 @@
     50%{transform:translateY(-6px);}
   }
 
-  /* ---- CONTROLS ---- */
+ 
   .panel{
     margin-top:26px;
     background:var(--foam);
@@ -207,7 +207,7 @@
     margin-top:1px;
   }
 
-  /* ---- STATUS ---- */
+
   .status{
     background:linear-gradient(135deg,#0A2E4D,#1C5D8C);
     color:#fff;
@@ -222,7 +222,7 @@
   }
   .status .emoji{font-size:26px;}
 
-  /* ---- WEB MAP ---- */
+  
   .webmap{
     margin-top:18px;
     background:var(--foam);
@@ -379,11 +379,13 @@
   <footer>Not real ecological data — just a sandbox for seeing how food webs ripple.</footer>
 </div>
 
+<!-- i couldnt find a pinniped emoji so i used an otter -->
+  
 <script>
   const SPECIES = ['krill','seals','orcas','whales','humans'];
-  const ICONS = {krill:'🦐', seals:'🦭', orcas:'🐬', whales:'🐳', humans:'🧑'};
+  const ICONS = {krill:'🦐', seals:'🦦', orcas:'🐬', whales:'🐳', humans:'🧑'};
 
-  // influence[row][col]: how much moving `row`'s lever shifts `col`'s population
+
   const INFLUENCE = {
     krill:  { whales: 0.5, seals: 0.3 },
     seals:  { orcas: 0.5, krill: -0.3 },
@@ -399,7 +401,7 @@
   function computePops(){
     const pops = {};
     SPECIES.forEach(x=>{
-      let p = 100 + state[x]; // direct control of your own lever
+      let p = 100 + state[x]; 
       SPECIES.forEach(y=>{
         if(y===x) return;
         const eff = (INFLUENCE[y] && INFLUENCE[y][x]) || 0;
