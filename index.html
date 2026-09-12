@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Ice Balance — arctic food web simulation</title>
+<title>The Ice Balance — Arctic Food Web Playground</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -45,7 +45,7 @@
     line-height:1.5;
   }
 
-
+  
   .scene{
     position:relative;
     border-radius:28px;
@@ -97,6 +97,16 @@
     width:100%;
     padding-top:14px;
   }
+  .zone.critical{animation:warnPulse 1.4s ease-in-out infinite;}
+  .zone.boom{animation:boomPulse 1.6s ease-in-out infinite;}
+  @keyframes warnPulse{
+    0%,100%{background-color:rgba(255,111,89,0);}
+    50%{background-color:rgba(255,111,89,0.28);}
+  }
+  @keyframes boomPulse{
+    0%,100%{background-color:rgba(255,200,87,0);}
+    50%{background-color:rgba(255,200,87,0.28);}
+  }
   .critter{
     display:inline-block;
     filter:drop-shadow(0 3px 4px rgba(0,0,0,0.25));
@@ -108,7 +118,7 @@
     50%{transform:translateY(-6px);}
   }
 
- 
+  
   .panel{
     margin-top:26px;
     background:var(--foam);
@@ -207,7 +217,7 @@
     margin-top:1px;
   }
 
-
+  
   .status{
     background:linear-gradient(135deg,#0A2E4D,#1C5D8C);
     color:#fff;
@@ -217,10 +227,52 @@
     font-size:14.5px;
     line-height:1.5;
     display:flex;
-    align-items:center;
+    align-items:flex-start;
     gap:12px;
   }
   .status .emoji{font-size:26px;}
+
+  
+  .impact{
+    margin-top:12px;
+    background:var(--foam);
+    border-radius:24px;
+    padding:16px 18px 6px;
+  }
+  .impact h2{
+    font-family:'Baloo 2',sans-serif;
+    font-size:15px; margin:0 0 10px; color:var(--deep);
+  }
+  .impact-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:9px 0;
+    border-top:1px solid #E1EFF3;
+  }
+  .impact-row:first-of-type{border-top:none;}
+  .impact-icon{font-size:20px; width:26px; text-align:center;}
+  .impact-name{font-weight:800; font-size:13px; width:80px; flex-shrink:0;}
+  .impact-badge{
+    font-family:'Baloo 2',sans-serif;
+    font-weight:700;
+    font-size:11.5px;
+    padding:3px 10px;
+    border-radius:999px;
+    color:#fff;
+    flex-shrink:0;
+  }
+  .tier-boom{background:var(--glow); color:#4A3200;}
+  .tier-grow{background:var(--aurora); color:#04372C;}
+  .tier-stable{background:#9FC7D6; color:#0A2E4D;}
+  .tier-decline{background:#F0A08F; color:#5A1400;}
+  .tier-collapse{background:var(--warn); color:#fff;}
+  .impact-cause{font-size:12.5px; color:#3A6B85; line-height:1.4; flex:1; min-width:160px;}
+
+  @media (max-width:560px){
+    .impact-row{flex-wrap:wrap;}
+    .impact-name{width:auto;}
+  }
 
   
   .webmap{
@@ -304,7 +356,7 @@
         <div class="lever-label">Krill</div>
       </div>
       <div class="lever">
-        <div class="lever-icon">🦭</div>
+        <div class="lever-icon">🦦</div>
         <div class="lever-track-wrap">
           <input type="range" min="-100" max="100" step="5" value="0" class="lever-input" data-species="seals">
         </div>
@@ -343,6 +395,11 @@
     <div id="statusText">The Arctic is in balance. Try pulling a lever to see what shifts.</div>
   </div>
 
+  <div class="impact">
+    <h2>Impact report — what each lever is doing</h2>
+    <div id="impactRows"></div>
+  </div>
+
   <div class="webmap">
     <h2>How they're connected</h2>
     <svg viewBox="0 0 640 190" xmlns="http://www.w3.org/2000/svg">
@@ -363,9 +420,11 @@
       <line x1="545" y1="65" x2="405" y2="150" stroke="#FF6F59" stroke-width="2.5" marker-end="url(#arrowNeg)"/>
       <line x1="545" y1="70" x2="250" y2="145" stroke="#FF6F59" stroke-width="2.5" marker-end="url(#arrowNeg)"/>
       <line x1="540" y1="72" x2="100" y2="150" stroke="#FF6F59" stroke-width="2" marker-end="url(#arrowNeg)" stroke-dasharray="4 3"/>
+      <line x1="258" y1="142" x2="540" y2="66" stroke="#4FD9B8" stroke-width="2" marker-end="url(#arrowPos)" stroke-dasharray="4 3"/>
+      <line x1="408" y1="140" x2="540" y2="70" stroke="#4FD9B8" stroke-width="2" marker-end="url(#arrowPos)" stroke-dasharray="4 3"/>
 
       <circle cx="80" cy="150" r="24" fill="#0A2E4D"/><text x="80" y="156" text-anchor="middle" font-size="20">🦐</text>
-      <circle cx="240" cy="150" r="24" fill="#0A2E4D"/><text x="240" y="156" text-anchor="middle" font-size="20">🦭</text>
+      <circle cx="240" cy="150" r="24" fill="#0A2E4D"/><text x="240" y="156" text-anchor="middle" font-size="20">🦦</text>
       <circle cx="400" cy="60" r="24" fill="#0A2E4D"/><text x="400" y="66" text-anchor="middle" font-size="20">🐬</text>
       <circle cx="400" cy="150" r="24" fill="#0A2E4D"/><text x="400" y="156" text-anchor="middle" font-size="20">🐳</text>
       <circle cx="560" cy="60" r="24" fill="#0A2E4D"/><text x="560" y="66" text-anchor="middle" font-size="20">🧑</text>
@@ -379,18 +438,17 @@
   <footer>Not real ecological data — just a sandbox for seeing how food webs ripple.</footer>
 </div>
 
-<!-- i couldnt find a pinniped emoji so i used an otter -->
-  
 <script>
   const SPECIES = ['krill','seals','orcas','whales','humans'];
   const ICONS = {krill:'🦐', seals:'🦦', orcas:'🐬', whales:'🐳', humans:'🧑'};
+  const LABELS = {krill:'Krill', seals:'Seals', orcas:'Orcas', whales:'Blue whales', humans:'Humans'};
 
-
+  
   const INFLUENCE = {
     krill:  { whales: 0.5, seals: 0.3 },
-    seals:  { orcas: 0.5, krill: -0.3 },
+    seals:  { orcas: 0.5, krill: -0.3, humans: 0.3 },
     orcas:  { seals: -0.6 },
-    whales: { krill: -0.4 },
+    whales: { krill: -0.4, humans: 0.3 },
     humans: { seals: -0.4, whales: -0.4, krill: -0.3 }
   };
 
@@ -432,34 +490,146 @@
         s.style.animationDelay = (Math.random()*3).toFixed(2)+'s';
         row.appendChild(s);
       }
+
+      const zoneEl = document.querySelector(`.zone[data-species="${sp}"]`);
+      zoneEl.classList.toggle('critical', pops[sp] <= 20);
+      zoneEl.classList.toggle('boom', pops[sp] >= 185);
     });
 
     updateStatus(pops);
+    updateImpactReport(pops);
+  }
+
+  function tierFor(pop){
+    if(pop >= 180) return {label:'Booming', cls:'tier-boom'};
+    if(pop >= 130) return {label:'Growing', cls:'tier-grow'};
+    if(pop >= 70)  return {label:'Stable', cls:'tier-stable'};
+    if(pop >= 25)  return {label:'Declining', cls:'tier-decline'};
+    return {label:'Collapsing', cls:'tier-collapse'};
+  }
+
+  function causeText(sp){
+    const contributors = [];
+    if(state[sp] !== 0) contributors.push({ source: sp, self:true, amount: state[sp] });
+    SPECIES.forEach(y=>{
+      if(y===sp) return;
+      const eff = (INFLUENCE[y] && INFLUENCE[y][sp]) || 0;
+      if(eff !== 0 && state[y] !== 0){
+        contributors.push({ source: y, eff, srcState: state[y], amount: eff * state[y] });
+      }
+    });
+    const strongest = contributors
+      .filter(c => Math.abs(c.amount) >= 8)
+      .sort((a,b)=> Math.abs(b.amount) - Math.abs(a.amount))[0];
+
+    if(!strongest) return 'Sitting close to its natural baseline right now.';
+
+    if(strongest.self){
+      return strongest.amount > 0
+        ? 'You pulled this lever up directly.'
+        : 'You pulled this lever down directly.';
+    }
+
+    const name = LABELS[strongest.source];
+    if(strongest.eff > 0){
+      
+      return strongest.srcState > 0
+        ? `${name} is thriving, giving this more food or support.`
+        : `${name} is declining, cutting off a resource this relies on.`;
+    } else {
+      
+      return strongest.srcState > 0
+        ? `${name} is preying on or out-competing this species.`
+        : `${name} declining is easing the pressure, letting this grow.`;
+    }
+  }
+
+  function updateImpactReport(pops){
+    const wrap = document.getElementById('impactRows');
+    wrap.innerHTML = '';
+    SPECIES.forEach(sp=>{
+      const tier = tierFor(pops[sp]);
+      const row = document.createElement('div');
+      row.className = 'impact-row';
+      row.innerHTML = `
+        <div class="impact-icon">${ICONS[sp]}</div>
+        <div class="impact-name">${LABELS[sp]}</div>
+        <div class="impact-badge ${tier.cls}">${tier.label} · ${pops[sp]}%</div>
+        <div class="impact-cause">${causeText(sp)}</div>
+      `;
+      wrap.appendChild(row);
+    });
+  }
+
+  function joinNames(arr){
+    if(arr.length===0) return '';
+    if(arr.length===1) return arr[0];
+    if(arr.length===2) return arr[0] + ' and ' + arr[1];
+    return arr.slice(0,-1).join(', ') + ', and ' + arr[arr.length-1];
+  }
+
+  function relationsFor(sp){
+    const feeds = [];
+    const preys = []; 
+    const infl = INFLUENCE[sp] || {};
+    Object.entries(infl).forEach(([other, val])=>{
+      if(val > 0) feeds.push(LABELS[other]);
+      if(val < 0) preys.push(LABELS[other]);
+    });
+    return { feeds, preys };
+  }
+
+  function speciesSentence(sp, pop){
+    const tier = tierFor(pop);
+    const { feeds, preys } = relationsFor(sp);
+    const name = LABELS[sp];
+
+    if(tier.label === 'Collapsing'){
+      if(pop <= 10){
+        let s = `${name} have gone extinct.`;
+        if(feeds.length) s += ` ${joinNames(feeds)} ${feeds.length>1?'have':'has'} lost a major food source.`;
+        if(preys.length) s += ` ${joinNames(preys)} ${preys.length>1?'are':'is'} free of a predator and could grow unchecked.`;
+        return { text:s, severity:5 };
+      }
+      let s = `${name} are dying off and heading toward extinction.`;
+      if(feeds.length) s += ` Food is running out for ${joinNames(feeds)}.`;
+      return { text:s, severity:4 };
+    }
+    if(tier.label === 'Declining'){
+      let s = `${name} are struggling and numbers are dropping.`;
+      if(feeds.length) s += ` ${joinNames(feeds)} ${feeds.length>1?'have':'has'} less to eat because of it.`;
+      return { text:s, severity:2 };
+    }
+    if(tier.label === 'Booming'){
+      let s = `${name} have exploded in number.`;
+      if(preys.length) s += ` ${joinNames(preys)} ${preys.length>1?'are':'is'} being hunted or crowded out hard.`;
+      if(feeds.length) s += ` ${joinNames(feeds)} ${feeds.length>1?'have':'has'} plenty to eat right now.`;
+      return { text:s, severity:3 };
+    }
+    if(tier.label === 'Growing'){
+      return { text:`${name} are thriving and growing steadily.`, severity:1 };
+    }
+    return null;
   }
 
   function updateStatus(pops){
     const el = document.getElementById('statusText');
     const emojiEl = document.querySelector('.status .emoji');
-    const low = Object.entries(pops).filter(([k,v])=>v<60).map(([k])=>k);
-    const high = Object.entries(pops).filter(([k,v])=>v>150).map(([k])=>k);
 
-    if(low.length===0 && high.length===0){
-      emojiEl.textContent='🧊';
+    const sentences = SPECIES
+      .map(sp => speciesSentence(sp, pops[sp]))
+      .filter(Boolean)
+      .sort((a,b) => b.severity - a.severity);
+
+    if(sentences.length === 0){
+      emojiEl.textContent = '🧊';
       el.textContent = 'The Arctic is in balance. Every population is holding steady.';
       return;
     }
-    let msgs=[];
-    if(low.includes('krill')) msgs.push('krill are thinning out, and everything above them will feel it');
-    if(low.includes('seals')) msgs.push('seals are struggling');
-    if(low.includes('orcas')) msgs.push('orcas are going hungry');
-    if(low.includes('whales')) msgs.push('blue whales are declining');
-    if(low.includes('humans')) msgs.push('human activity here has dropped off');
-    if(high.includes('humans')) msgs.push('heavy human pressure is rippling through the food web');
-    if(high.includes('orcas')) msgs.push('orcas are booming');
-    if(high.includes('krill')) msgs.push('krill are swarming in huge numbers');
 
-    emojiEl.textContent = low.length>0 ? '⚠️' : '🌊';
-    el.textContent = 'Looks like ' + msgs.slice(0,2).join(', and ') + '.';
+    const worst = sentences[0].severity;
+    emojiEl.textContent = worst >= 4 ? '🚨' : worst === 3 ? '📈' : worst === 2 ? '⚠️' : '🌱';
+    el.textContent = sentences.map(s => s.text).join(' ');
   }
 
   document.querySelectorAll('.lever-input').forEach(input=>{
@@ -470,7 +640,7 @@
   });
 
   document.getElementById('resetBtn').addEventListener('click', ()=>{
-    SPECIES.forEach(sp=>{ state[sp]=0; document.querySelector(`[data-species="${sp}"]`).value=0; });
+    SPECIES.forEach(sp=>{ state[sp]=0; document.querySelector(`.lever-input[data-species="${sp}"]`).value=0; });
     render();
   });
 
